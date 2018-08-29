@@ -9,8 +9,7 @@ import slashee.main.Slashee;
 import static org.junit.Assert.*;
 
 public class SlasheeTest {
-    @Test public void testSomeLibraryMethod() {
-        Slashee classUnderTest = new Slashee();
-        assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
+    @Test public void testSlashee() {
+        assertNotNull(Slashee.getSlackToken());
     }
 }
