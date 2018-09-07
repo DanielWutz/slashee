@@ -4,12 +4,22 @@ package slashee.test;
  */
 import org.junit.Test;
 
-import slashee.main.SlackHandler;
+import slashee.main.*;
 
 import static org.junit.Assert.*;
 
 public class SlasheeTest {
     @Test public void testSlashee() {
-        assertNotNull(SlackHandler.getSlackToken());
+    	
+        assertNotNull(ConfigHandler.getSlackToken());
+        assertNotNull(ConfigHandler.getIncludeDeletedUsers());
+        assertNotNull(ConfigHandler.getIncludeHiddenFields());
+        
+        assertNotNull(SlackHandler.getUserIds());
+        assertFalse(SlackHandler.getUserIds().isEmpty());
+        assertNotNull(SlackHandler.getIdToLabelMap());
+        assertFalse(SlackHandler.getIdToLabelMap().isEmpty());
+        assertNotNull(SlackHandler.getProfilePerUser());
+        assertFalse(SlackHandler.getProfilePerUser().isEmpty());
     }
 }
