@@ -4,12 +4,12 @@ package slashee.test;
  */
 import org.junit.Test;
 
-import slashee.main.Slashee;
+import slashee.main.SlackHandler;
 
 import static org.junit.Assert.*;
 
 public class SlasheeTest {
     @Test public void testSlashee() {
-        assertNotNull(Slashee.getSlackToken());
+        assertNotNull(SlackHandler.getSlackToken());
     }
 }

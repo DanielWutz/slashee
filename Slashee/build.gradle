@@ -32,4 +32,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-mainClassName = 'slashee.main.Slashee'  // Main class with main method
+mainClassName = 'slashee.main.SlackHandler'  // Main class with main method
