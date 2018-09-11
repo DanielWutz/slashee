@@ -101,7 +101,8 @@ public class SlackHandler {
     		final String alternateEmail = profileMap.get(alternateEmailKey);
     		
     		if (null == email && null != alternateEmail) {
-    			profileMap.put(emailKey, alternateEmail);
+    			profileMap.put(emailKey, alternateEmail);	// move alternate Email to Email
+    			profileMap.remove(alternateEmailKey);		// remove alternate Email
     		}
     		
     		profilePerUser.add(profileMap);

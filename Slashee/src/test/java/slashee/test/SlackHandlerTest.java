@@ -8,16 +8,8 @@ import slashee.main.*;
 
 import static org.junit.Assert.*;
 
-public class SlasheeTest {
-    @Test public void testSlashee() {
-    	
-        assertNotNull(ConfigHandler.getSlackToken());
-        assertNotNull(ConfigHandler.getSlackUrl());
-        assertNotNull(ConfigHandler.getEmailKey());
-        assertNotNull(ConfigHandler.getAlternateEmailKey());
-        assertNotNull(ConfigHandler.getIncludeDeletedUsers());
-        assertNotNull(ConfigHandler.getIncludeHiddenFields());
-        
+public class SlackHandlerTest {
+    @Test public void testSlackHandler() {
         assertNotNull(SlackHandler.getUserIds());
         assertFalse(SlackHandler.getUserIds().isEmpty());
         assertNotNull(SlackHandler.getIdToLabelMap());
