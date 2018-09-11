@@ -1,6 +1,8 @@
 .gradle
 *scripts/
 /bin/
+credentials.json
+StoredCredential
 
 # Ignore Gradle GUI config
 gradle-app.setting
