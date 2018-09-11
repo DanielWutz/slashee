@@ -68,47 +68,46 @@ public class SlackHandler {
     	return null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static List<Map<String, String>> getProfilePerUser() {
 		List<String> userIds = getUserIds();
     	Map<String, String> idToLabelMap = getIdToLabelMap();
     	List<Map<String, String>> profilePerUser = new ArrayList<Map<String, String>>();
-    	//TODO
-    	Integer count = 0;
     	for (String id : userIds) {
-    		Map<String, String> profile = new HashMap<String, String>();
-    		Map<String, Field> fields = getProfile(id).getFields();
+    		Map<String, String> profileMap = new HashMap<String, String>();
+    		
+    		// default fields
+    		Profile profile = getProfile(id);
+    		String firstName = profile.getFirstName();
+    		String lastName = profile.getLastName();
+    		if (null != id) profileMap.put("Id", id);
+    		if (null != firstName) profileMap.put("First name", profile.getFirstName());
+    		if (null != lastName) profileMap.put("Last name", profile.getLastName());
+    		if (null != id) profileMap.put("Slack URL", ConfigHandler.getSlackUrl() + "/team/" + id);
+    		
+    		// custom fields
+    		Map<String, Field> fields = profile.getFields();
+    		
     		if (null != fields) {
 	    		for (Map.Entry<String, Field> field : fields.entrySet()) {
-	    		    profile.put(idToLabelMap.get(field.getKey()), field.getValue().getValue());
+	    		    profileMap.put(idToLabelMap.get(field.getKey()), field.getValue().getValue());
 	    		}
     		}
-    		profilePerUser.add(profile);
-    		// TODO remove
-    		Printer.info((++count).toString());
+    		
+    		// sometimes, Email is not filled, but alternate Email is :-O
+    		final String emailKey = ConfigHandler.getEmailKey();
+    		final String alternateEmailKey = ConfigHandler.getAlternateEmailKey();
+    		final String email = profileMap.get(emailKey);
+    		final String alternateEmail = profileMap.get(alternateEmailKey);
+    		
+    		if (null == email && null != alternateEmail) {
+    			profileMap.put(emailKey, alternateEmail);
+    		}
+    		
+    		profilePerUser.add(profileMap);
     	}
     	return profilePerUser;
 	}
-	
-    public static void main(String[] args) {
-    	
-    	List<Map<String, String>> profilePerUser = getProfilePerUser();
-    	for (Map<String, String> profile : profilePerUser) {
-    		for (Map.Entry<String, String> field : profile.entrySet()) {
-    		    Printer.info("Key = " + field.getKey() + ", Value = " + field.getValue());
-    		}
-    		Printer.info("=====================");
-    	}
-    	
-    	/*
-    	Map<String, String> idToLabelMap = getIdToLabelMap();
-    		
-    		if (null != idToLabelMap) {
-	    		for (Map.Entry<String, String> field : idToLabelMap.entrySet()) {
-	    		    Printer.info("Key = " + field.getKey() + ", Value = " + field.getValue());
-	    		}
-    		}
-    		Printer.info("=====================");  */
-    	}
     
     private static Profile getProfile(String id) {
     	try {

@@ -3,7 +3,9 @@ package slashee.main;
 public class Printer {
 	
 	private static void errorSpecific(String exceptionName) {
-		error(exceptionName + " Exception occured. Please retry. If it still fails, contact the developer :-)");
+		error(exceptionName + " Exception occured. Possibly, you are offline. " +
+				"Please check your internet connection and retry. "
+				+ "If it still fails, contact the developers :-)");
 	}
 	
 	public static void error(String msg) {

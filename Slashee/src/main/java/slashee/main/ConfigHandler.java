@@ -11,9 +11,24 @@ public class ConfigHandler {
 	private static final String SLACK_TOKEN_KEY = "slack.token";
 	private static final String SLACK_INCLUDEDELETEDUSERS_KEY = "slack.users.includeDeletedUsers";
 	private static final String SLACK_INCLUDEHIDDENFIELDS_KEY = "slack.team.includeHiddenFields";
+	private static final String SLACK_URL_KEY = "slack.url";
+	private static final String SLACK_EMAILKEY_KEY = "slack.profile.emailKey";
+	private static final String SLACK_ALTERNATEEMAIL_KEY = "slack.profile.alternateEmailKey";
 
 	public static String getSlackToken() {
 		return get(SLACK_TOKEN_KEY);
+	}
+	
+	public static String getSlackUrl() {
+		return get(SLACK_URL_KEY);
+	}
+	
+	public static String getEmailKey() {
+		return get(SLACK_EMAILKEY_KEY);
+	}
+	
+	public static String getAlternateEmailKey() {
+		return get(SLACK_ALTERNATEEMAIL_KEY);
 	}
 	
 	public static Boolean getIncludeDeletedUsers() {
