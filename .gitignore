@@ -2,6 +2,7 @@
 *scripts/
 /bin/
 /Slashee/build
+/Slashee/out
 credentials.json
 StoredCredential
 
@@ -26,3 +27,5 @@ gradle-app.setting
 *.jar
 output.bin*
 
+.idea
+*.iml

@@ -1,39 +1,33 @@
 package slashee.main;
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.common.collect.ImmutableList;
+import slashee.main.google.GSheets;
+import slashee.main.slack.SlackHandler;
+import slashee.main.slack.model.SlackProfile;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
-import java.util.Map;
 
 public class Slashee {
 
-public static void main(String[] args) {
+	private static final java.io.File DATA_STORE_DIR = new java.io.File(".credentials/");
+
+	public static void main(String[] args) throws GeneralSecurityException, IOException {
+		final HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		final FileDataStoreFactory dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+		final JacksonFactory jacksonFactory = JacksonFactory.getDefaultInstance();
+		final List<String> scopes = ImmutableList.of(SheetsScopes.SPREADSHEETS);
+
+		final GSheets sheets = new GSheets(dataStoreFactory, jacksonFactory, httpTransport, scopes);
     	
-    	/* List<Map<String, String>> profilePerUser = SlackHandler.getProfilePerUser();
-    	for (Map<String, String> profile : profilePerUser) {
-    		for (Map.Entry<String, String> field : profile.entrySet()) {
-    		    Printer.info("Key = " + field.getKey() + ", Value = " + field.getValue());
-    		}
-    		Printer.info("=====================");
-    	}
-    	*/
-		
-		try {
-			SheetsHandler.main(args);
-		} catch (IOException | GeneralSecurityException e) {
-			// TODO Auto-generated catch block
-			Printer.error(e.getStackTrace().toString());
-		}
-	
-    	/*
-    	Map<String, String> idToLabelMap = getIdToLabelMap();
-    		
-    		if (null != idToLabelMap) {
-	    		for (Map.Entry<String, String> field : idToLabelMap.entrySet()) {
-	    		    Printer.info("Key = " + field.getKey() + ", Value = " + field.getValue());
-	    		}
-    		}
-    		Printer.info("=====================");  */
-    	}
+    	List<SlackProfile> profilePerUser = SlackHandler.getProfilePerUser();
+    	sheets.write(profilePerUser);
+	}
 
 }

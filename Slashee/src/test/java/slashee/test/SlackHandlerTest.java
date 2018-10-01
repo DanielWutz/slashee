@@ -4,7 +4,7 @@ package slashee.test;
  */
 import org.junit.Test;
 
-import slashee.main.*;
+import slashee.main.slack.SlackHandler;
 
 import static org.junit.Assert.*;
 
