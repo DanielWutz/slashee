@@ -14,6 +14,11 @@ public class ConfigHandler {
 	private static final String SLACK_URL_KEY = "slack.url";
 	private static final String SLACK_EMAILKEY_KEY = "slack.profile.emailKey";
 	private static final String SLACK_ALTERNATEEMAIL_KEY = "slack.profile.alternateEmailKey";
+	private static final String SHEETS_SECRET_CLIENT = "sheets.secrets.client";
+	private static final String SHEETS_SECRET_USER = "sheets.secrets.user";
+	private static final String SHEETS_APPLICATION_NAME = "sheets.application.name";
+	private static final String SHEETS_APPLICATION_SHEETS_ID = "sheets.application.sheets.id";
+	private static final String SHEETS_APPLICATION_SHEETS_RANGE = "sheets.application.sheets.range";
 
 	public static String getSlackToken() {
 		return get(SLACK_TOKEN_KEY);
@@ -30,7 +35,23 @@ public class ConfigHandler {
 	public static String getAlternateEmailKey() {
 		return get(SLACK_ALTERNATEEMAIL_KEY);
 	}
-	
+
+	public static String getSheetsSecretClient() {
+		return get(SHEETS_SECRET_CLIENT);
+	}
+	public static String getSheetsSecretUser() {
+		return get(SHEETS_SECRET_USER);
+	}
+	public static String getSheetsApplicationName() {
+		return get(SHEETS_APPLICATION_NAME);
+	}
+	public static String getSheetsApplicationSheetsId() {
+		return get(SHEETS_APPLICATION_SHEETS_ID);
+	}
+	public static String getSheetsApplicationSheetsRange() {
+		return get(SHEETS_APPLICATION_SHEETS_RANGE);
+	}
+
 	public static Boolean getIncludeDeletedUsers() {
 		return getBoolean(SLACK_INCLUDEDELETEDUSERS_KEY);
 	}
@@ -38,6 +59,8 @@ public class ConfigHandler {
 	public static Boolean getIncludeHiddenFields() {
 		return getBoolean(SLACK_INCLUDEHIDDENFIELDS_KEY);
 	}
+
+
 	
 	private static Boolean getBoolean(String key) {
 		String theBoolean = get(key);

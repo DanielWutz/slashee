@@ -31,7 +31,7 @@ public class SlackHandler {
 			UsersListResponse usersList = slack.methods().usersList(UsersListRequest.builder()
 					.token(slackToken)
 					.build());
-			List<String> ids = new ArrayList<String>();
+			List<String> ids = new ArrayList<>();
 			for (User user : usersList.getMembers()) {
 					if (ConfigHandler.getIncludeDeletedUsers() || !user.isDeleted()) {
 						ids.add(user.getId());

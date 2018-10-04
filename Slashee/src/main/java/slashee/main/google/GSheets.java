@@ -10,6 +10,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import slashee.main.ConfigHandler;
 import slashee.main.slack.model.SlackProfile;
 
 import java.io.IOException;
@@ -20,14 +21,6 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class GSheets {
-    /**
-     * Application name.
-     */
-    private static final String APPLICATION_NAME = "Knowledge Champion Slack export";
-
-    private static final String SHEETS_ID = "1-ahD0IPnBjY_fIo7Rve18g0Rt1ht0tLkVAvwvws1-mU";
-    private static final String RANGE = "Data from Slack!B2";
-
     private final FileDataStoreFactory dataStoreFactory;
     private final JsonFactory jsonFactory;
     private final HttpTransport httpTransport;
@@ -62,14 +55,14 @@ public class GSheets {
         });
 
         ValueRange body = new ValueRange().setValues(values);
-        service.spreadsheets().values().update(SHEETS_ID, RANGE, body)
+        service.spreadsheets().values().update(ConfigHandler.getSheetsApplicationSheetsId(), ConfigHandler.getSheetsApplicationSheetsRange(), body)
                 .setValueInputOption("RAW")
                 .execute();
     }
 
     private Credential authorize() throws IOException {
         // Load client secrets.
-        InputStream in = getClass().getResourceAsStream("/client_secret.json");
+        InputStream in = getClass().getResourceAsStream(ConfigHandler.getSheetsSecretClient());
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
 
@@ -88,7 +81,7 @@ public class GSheets {
     private Sheets getSheetsService() throws IOException {
         Credential credential = authorize();
         return new Sheets.Builder(httpTransport, jsonFactory, credential)
-                .setApplicationName(APPLICATION_NAME)
+                .setApplicationName(ConfigHandler.getSheetsApplicationName())
                 .build();
     }
 }

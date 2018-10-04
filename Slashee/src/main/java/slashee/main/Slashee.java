@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Slashee {
 
-	private static final java.io.File DATA_STORE_DIR = new java.io.File(".credentials/");
+	private static final java.io.File DATA_STORE_DIR = new java.io.File(ConfigHandler.getSheetsSecretUser());
 
 	public static void main(String[] args) throws GeneralSecurityException, IOException {
 		final HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
