@@ -1,4 +1,4 @@
-package slashee.main;
+package slashee.main.slack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +17,9 @@ import com.github.seratch.jslack.api.methods.response.users.profile.UsersProfile
 import com.github.seratch.jslack.api.model.User;
 import com.github.seratch.jslack.api.model.User.Profile;
 import com.github.seratch.jslack.api.model.User.Profile.Field;
+import slashee.main.ConfigHandler;
+import slashee.main.Printer;
+import slashee.main.slack.model.SlackProfile;
 
 public class SlackHandler {
 	
@@ -28,7 +31,7 @@ public class SlackHandler {
 			UsersListResponse usersList = slack.methods().usersList(UsersListRequest.builder()
 					.token(slackToken)
 					.build());
-			List<String> ids = new ArrayList<String>();
+			List<String> ids = new ArrayList<>();
 			for (User user : usersList.getMembers()) {
 					if (ConfigHandler.getIncludeDeletedUsers() || !user.isDeleted()) {
 						ids.add(user.getId());
@@ -69,12 +72,12 @@ public class SlackHandler {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static List<Map<String, String>> getProfilePerUser() {
+	public static List<SlackProfile> getProfilePerUser() {
 		List<String> userIds = getUserIds();
     	Map<String, String> idToLabelMap = getIdToLabelMap();
-    	List<Map<String, String>> profilePerUser = new ArrayList<Map<String, String>>();
+    	List<SlackProfile> profilePerUser = new ArrayList<>();
     	for (String id : userIds) {
-    		Map<String, String> profileMap = new HashMap<String, String>();
+    		Map<String, String> profileMap = new HashMap<>();
     		
     		// default fields
     		Profile profile = getProfile(id);
@@ -105,7 +108,7 @@ public class SlackHandler {
     			profileMap.remove(alternateEmailKey);		// remove alternate Email
     		}
     		
-    		profilePerUser.add(profileMap);
+    		profilePerUser.add(new SlackProfile(profileMap));
     	}
     	return profilePerUser;
 	}

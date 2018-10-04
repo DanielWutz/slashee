@@ -1,5 +1,10 @@
 .gradle
+*scripts/
+/bin/
 /Slashee/build
+/Slashee/out
+credentials.json
+StoredCredential
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -19,4 +24,8 @@ gradle-app.setting
 *.class
 *.settings
 *.MF
+*.jar
 output.bin*
+
+.idea
+*.iml
