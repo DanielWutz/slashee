@@ -10,6 +10,7 @@ public class ConfigHandler {
 	private static final String CONFIG_FILENAME = "config.properties";
 	private static final String SLACK_TOKEN_KEY = "slack.token";
 	private static final String SLACK_INCLUDEDELETEDUSERS_KEY = "slack.users.includeDeletedUsers";
+	private static final String SLACK_INCLUDEGUESTUSERS_KEY = "slack.users.includeGuestUsers";
 	private static final String SLACK_INCLUDEHIDDENFIELDS_KEY = "slack.team.includeHiddenFields";
 	private static final String SLACK_URL_KEY = "slack.url";
 	private static final String SLACK_EMAILKEY_KEY = "slack.profile.emailKey";
@@ -54,6 +55,10 @@ public class ConfigHandler {
 
 	public static Boolean getIncludeDeletedUsers() {
 		return getBoolean(SLACK_INCLUDEDELETEDUSERS_KEY);
+	}
+	
+	public static Boolean getIncludeGuestUsers() {
+		return getBoolean(SLACK_INCLUDEGUESTUSERS_KEY);
 	}
 	
 	public static Boolean getIncludeHiddenFields() {

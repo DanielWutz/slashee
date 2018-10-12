@@ -73,42 +73,46 @@ public class SlackHandler {
 	
 	@SuppressWarnings("deprecation")
 	public static List<SlackProfile> getProfilePerUser() {
-		List<String> userIds = getUserIds();
-    	Map<String, String> idToLabelMap = getIdToLabelMap();
-    	List<SlackProfile> profilePerUser = new ArrayList<>();
-    	for (String id : userIds) {
-    		Map<String, String> profileMap = new HashMap<>();
-    		
-    		// default fields
-    		Profile profile = getProfile(id);
-    		String firstName = profile.getFirstName();
-    		String lastName = profile.getLastName();
-    		if (null != id) profileMap.put("Id", id);
-    		if (null != firstName) profileMap.put("First name", profile.getFirstName());
-    		if (null != lastName) profileMap.put("Last name", profile.getLastName());
-    		if (null != id) profileMap.put("Slack URL", ConfigHandler.getSlackUrl() + "/team/" + id);
-    		
-    		// custom fields
-    		Map<String, Field> fields = profile.getFields();
-    		
-    		if (null != fields) {
-	    		for (Map.Entry<String, Field> field : fields.entrySet()) {
-	    		    profileMap.put(idToLabelMap.get(field.getKey()), field.getValue().getValue());
+		final List<String> userIds = getUserIds();
+    	final Map<String, String> idToLabelMap = getIdToLabelMap();
+    	final List<SlackProfile> profilePerUser = new ArrayList<>();
+    	for (final String id : userIds) {
+    		final Profile profile = getProfile(id);
+    		final String firstName = profile.getFirstName();
+    		if (ConfigHandler.getIncludeGuestUsers() || (null != firstName && !firstName.isEmpty())) {
+	    		final String lastName = profile.getLastName();
+	    		final Map<String, String> profileMap = new HashMap<>();
+	    		
+	    		// default fields
+	    		
+	    		
+	    		if (null != id) 		profileMap.put("Id", id);
+	    		if (null != firstName)	profileMap.put("First name", profile.getFirstName());
+	    		if (null != lastName) 	profileMap.put("Last name", lastName);
+	    		if (null != id) 		profileMap.put("Slack URL", ConfigHandler.getSlackUrl() + "/team/" + id);
+	    		
+	    		// custom fields
+	    		final Map<String, Field> fields = profile.getFields();
+	    		
+	    		if (null != fields) {
+		    		for (Map.Entry<String, Field> field : fields.entrySet()) {
+		    		    profileMap.put(idToLabelMap.get(field.getKey()), field.getValue().getValue());
+		    		}
 	    		}
+	    		
+	    		// sometimes, Email is not filled, but alternate Email is :-O
+	    		final String emailKey = ConfigHandler.getEmailKey();
+	    		final String alternateEmailKey = ConfigHandler.getAlternateEmailKey();
+	    		final String email = profileMap.get(emailKey);
+	    		final String alternateEmail = profileMap.get(alternateEmailKey);
+	    		
+	    		if (null == email && null != alternateEmail) {
+	    			profileMap.put(emailKey, alternateEmail);	// move alternate Email to Email
+	    			profileMap.remove(alternateEmailKey);		// remove alternate Email
+	    		}
+	    		
+	    		profilePerUser.add(new SlackProfile(profileMap));
     		}
-    		
-    		// sometimes, Email is not filled, but alternate Email is :-O
-    		final String emailKey = ConfigHandler.getEmailKey();
-    		final String alternateEmailKey = ConfigHandler.getAlternateEmailKey();
-    		final String email = profileMap.get(emailKey);
-    		final String alternateEmail = profileMap.get(alternateEmailKey);
-    		
-    		if (null == email && null != alternateEmail) {
-    			profileMap.put(emailKey, alternateEmail);	// move alternate Email to Email
-    			profileMap.remove(alternateEmailKey);		// remove alternate Email
-    		}
-    		
-    		profilePerUser.add(new SlackProfile(profileMap));
     	}
     	return profilePerUser;
 	}
